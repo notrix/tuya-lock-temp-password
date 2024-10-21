@@ -12,8 +12,8 @@ try {
     var topicStatus = process.env.PORT + '/status';
     var topicSubscribe = process.env.PORT + '/password';
 
-    console.log(process.env.CLIENT_ID);
-    console.log(process.env.SECRET);
+    console.log(process.env);
+    console.log(env);
 
     mqttOptions.will = {
         topic: topicStatus,
