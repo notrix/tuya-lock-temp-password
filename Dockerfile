@@ -12,8 +12,7 @@ RUN apk add --no-cache --virtual .build-dependencies \
         gcc \
         libc-dev \
         linux-headers \
-        make \
-        python2-dev
+        make
 
 RUN apk add nodejs npm
 
