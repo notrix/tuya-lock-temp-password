@@ -16,9 +16,7 @@ RUN apk add --no-cache --virtual .build-dependencies \
 
 RUN apk add nodejs npm
 
-RUN npm config set unsafe-perm true
-
-RUN npm install --no-audit --no-optional --no-update-notifier --only=production --unsafe-perm
+RUN npm install --no-audit --no-optional --no-update-notifier --only=production
 
 RUN chmod a+x /execute.sh
 
