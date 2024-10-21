@@ -7,6 +7,7 @@
   "startup": "services",
   "services": ["mqtt:need"],
   "boot": "auto",
+  "init": false,
   "stage": "experimental",
   "options": {
     "topic_namespace": "notrix/tuya"
