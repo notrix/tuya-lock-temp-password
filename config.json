@@ -1,0 +1,17 @@
+{
+  "name": "Tuya lock temporary password",
+  "version": "0.0.1",
+  "slug": "tuya-lock-temp-password",
+  "description": "MQTT consumer and producer for Tuya lock API",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "startup": "services",
+  "services": ["mqtt:need"],
+  "boot": "auto",
+  "stage": "experimental",
+  "options": {
+    "topic_namespace": "notrix/tuya"
+  },
+  "schema": {
+    "topic_namespace": "str"
+  }
+}

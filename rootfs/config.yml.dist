@@ -1,0 +1,8 @@
+mqtt:
+    host: 'mqtt://${host}'
+    options:
+        username: '${username}'
+        password: '${password}'
+topics:
+    status: '${topic}/status'
+    password: '${topic}/password'
