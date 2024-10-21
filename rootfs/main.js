@@ -9,11 +9,11 @@ try {
 
 try {
     var mqttOptions = config.mqtt.options;
-    var topicStatus = process.env.PORT + '/status';
-    var topicSubscribe = process.env.PORT + '/password';
+    var topicStatus = process.env.TOPIC + '/status';
+    var topicSubscribe = process.env.TOPIC + '/password';
 
-    console.log(process.env);
-    console.log(env);
+    console.log(process.env.CLIENT_ID);
+    console.log(process.env.SECRET);
 
     mqttOptions.will = {
         topic: topicStatus,
