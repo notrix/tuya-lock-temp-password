@@ -10,9 +10,13 @@
   "init": false,
   "stage": "experimental",
   "options": {
-    "topic_namespace": "notrix/tuya"
+    "topic": "notrix/tuya",
+    "client_id": "",
+    "secret": ""
   },
   "schema": {
-    "topic_namespace": "str"
+    "topic": "str",
+    "client_id": "str",
+    "secret": "str"
   }
 }

@@ -9,19 +9,25 @@ try {
 
 try {
     var mqttOptions = config.mqtt.options;
+    var topicStatus = process.env.PORT + '/status';
+    var topicSubscribe = process.env.PORT + '/password';
+
+    console.log(process.env.CLIENT_ID);
+    console.log(process.env.SECRET);
+
     mqttOptions.will = {
-        topic: config.topics.status,
+        topic: topicStatus,
         payload: 'offline',
         retain: true,
         qos: 1
     };
 
     client = mqtt.connect(config.mqtt.host, mqttOptions);
-    client.publish(config.topics.status, 'online', {
+    client.publish(topicStatus, 'online', {
         retain: true,
         qos: 1
     });
-    client.subscribe(config.topics.password);
+    client.subscribe(topicSubscribe);
 
     client.on('message', function (topic, message) {
         var data = JSON.parse(message);

@@ -3,8 +3,10 @@
 HOST=$(bashio::services mqtt "host")
 USERNAME=$(bashio::services mqtt "username")
 PASSWORD=$(bashio::services mqtt "password")
-TOPIC=$(bashio::config "topic_namespace")
 
-sed -e "s/\${host}/${HOST}/" -e "s/\${username}/${USERNAME}/" -e "s/\${password}/${PASSWORD}/" -e "s/\${topic}/${TOPIC}/" config.yml.dist > config.yml
+CLIENT_ID=$(bashio::config "client_id")
+SECRET=$(bashio::config "secret")
 
-node main.js
+sed -e "s/\${host}/${HOST}/" -e "s/\${username}/${USERNAME}/" -e "s/\${password}/${PASSWORD}/" config.yml.dist > config.yml
+
+TOPIC=$(bashio::config "topic") node main.js
