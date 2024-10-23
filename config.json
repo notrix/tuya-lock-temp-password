@@ -12,11 +12,13 @@
   "options": {
     "topic": "notrix/tuya",
     "client_id": "",
-    "secret": ""
+    "secret": "",
+    "device": ""
   },
   "schema": {
     "topic": "str",
     "client_id": "str",
-    "secret": "str"
+    "secret": "str",
+    "device": "str"
   }
 }
