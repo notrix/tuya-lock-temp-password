@@ -3,7 +3,7 @@ const mqtt = require('mqtt'),
     https = require('https'),
     CryptoJS = require('crypto-js'),
     baseHost = 'openapi.tuyaeu.com',
-    userAgent = 'NoTriX tuya-lock-temp-password 0.0.4';
+    userAgent = 'NoTriX tuya-lock-temp-password 0.0.5';
 
 let config;
 try {
@@ -81,12 +81,12 @@ function pushTempPass(mqttClient, data, topicSuccess, topicError) {
             '',
             accessToken,
             function (devices) {
-                let requestStart = new Date(data.start).toLocaleDateString();
-                let requestEnd = new Date(data.end).toLocaleDateString();
+                let requestStart = new Date(data.start * 1000).toLocaleDateString();
+                let requestEnd = new Date(data.end * 1000).toLocaleDateString();
                 let codeExists = false;
                 devices.forEach(function (device) {
-                    let startDate = new Date(device.effective_time).toLocaleDateString();
-                    let endDate = new Date(device.invalid_time).toLocaleDateString();
+                    let startDate = new Date(device.effective_time * 1000).toLocaleDateString();
+                    let endDate = new Date(device.invalid_time * 1000).toLocaleDateString();
 
                     if (requestStart === startDate && requestEnd === endDate) {
                         codeExists = true;
