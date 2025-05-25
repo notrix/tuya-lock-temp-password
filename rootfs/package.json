@@ -1,6 +1,6 @@
 {
     "name": "tuya-lock-temp-password",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "dependencies": {
         "mqtt": "~5.10",
         "read-yaml": "~1.1",

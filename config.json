@@ -1,6 +1,6 @@
 {
   "name": "Tuya lock temporary password",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "slug": "tuya-lock-temp-password",
   "description": "MQTT consumer and producer for Tuya lock API",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
