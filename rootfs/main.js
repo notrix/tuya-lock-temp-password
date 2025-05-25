@@ -3,7 +3,7 @@ const mqtt = require('mqtt'),
     https = require('https'),
     CryptoJS = require('crypto-js'),
     baseHost = 'openapi.tuyaeu.com',
-    userAgent = 'NoTriX tuya-lock-temp-password 0.0.5';
+    userAgent = 'NoTriX tuya-lock-temp-password 0.1.0';
 
 let config;
 try {
@@ -12,15 +12,15 @@ try {
     config = readYaml.sync('config.yml.dist');
 }
 
-var refreshTokenStr = null;
+let refreshTokenStr = null;
 
 (function () {
     try {
-        var mqttOptions = config.mqtt.options;
-        var topicStatus = process.env.TOPIC + '/status';
-        var topicSubscribe = process.env.TOPIC + '/password';
-        var topicSuccess = process.env.TOPIC + '/success';
-        var topicError = process.env.TOPIC + '/error';
+        let mqttOptions = config.mqtt.options;
+        let topicStatus = process.env.TOPIC + '/status';
+        let topicSubscribe = process.env.TOPIC + '/password';
+        let topicSuccess = process.env.TOPIC + '/success';
+        let topicError = process.env.TOPIC + '/error';
 
         mqttOptions.will = {
             topic: topicStatus,
@@ -29,7 +29,7 @@ var refreshTokenStr = null;
             qos: 1
         };
 
-        client = mqtt.connect(config.mqtt.host, mqttOptions);
+        const client = mqtt.connect(config.mqtt.host, mqttOptions);
         client.on("connect", () => {
             client.subscribe(topicSubscribe, (err) => {
                 if (!err) {
@@ -41,7 +41,7 @@ var refreshTokenStr = null;
             });
         });
         client.on('message', function (topic, message) {
-            var messageData = JSON.parse(message.toString());
+            let messageData = JSON.parse(message.toString());
 
             console.debug(messageData);
             pushTempPass(client, messageData, topicSuccess, topicError);
@@ -60,9 +60,9 @@ function pushTempPass(mqttClient, data, topicSuccess, topicError) {
         });
     };
 
-    const successCallback = function (id) {
-        console.log("Success! Created temp password with id: " + id);
-        mqttClient.publish(topicSuccess, "Created temp password with id: " + id, {
+    const successCallback = function (result) {
+        console.log("Success! Created temp password: " + result);
+        mqttClient.publish(topicSuccess, "Created temp password: " + result, {
             retain: false,
             qos: 1
         });
@@ -128,7 +128,7 @@ function pushTempPass(mqttClient, data, topicSuccess, topicError) {
                             JSON.stringify(payload),
                             accessToken,
                             function (responseBody) {
-                                successCallback(responseBody.id);
+                                successCallback(data.name);
                             },
                             errorCallback
                         );
@@ -166,17 +166,17 @@ function pushTempPass(mqttClient, data, topicSuccess, topicError) {
 }
 
 function makeRequest(method, path, query, bodyStr, accessToken, callback, errorCallback) {
-    var signMap = stringToSign(path, query, method, bodyStr);
-    var urlStr = signMap["url"];
-    var signStr = signMap["signUrl"];
+    let signMap = stringToSign(path, query, method, bodyStr);
+    let urlStr = signMap["url"];
+    let signStr = signMap["signUrl"];
 
     const timestamp = getTime();
     const clientId = process.env.CLIENT_ID;
     const secret = process.env.SECRET;
 
-    var sign = calcSign(clientId, accessToken, timestamp, signStr, secret);
+    let sign = calcSign(clientId, accessToken, timestamp, signStr, secret);
 
-    var options = {
+    let options = {
         hostname: baseHost,
         port: 443,
         path: urlStr,
@@ -229,8 +229,8 @@ function getTime(){
 }
 
 function encryptAES128(data, secretKey) {
-    var key = CryptoJS.enc.Utf8.parse(secretKey);
-    var encrypted = CryptoJS.AES.encrypt(data, key, {
+    let key = CryptoJS.enc.Utf8.parse(secretKey);
+    let encrypted = CryptoJS.AES.encrypt(data, key, {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7,
     });
@@ -239,10 +239,10 @@ function encryptAES128(data, secretKey) {
 }
 
 function decryptAES128(data, secretKey) {
-    var key = CryptoJS.enc.Utf8.parse(secretKey);
-    var encryptedHexStr = CryptoJS.enc.Hex.parse(data);
-    var encryptedBase64Str = CryptoJS.enc.Base64.stringify(encryptedHexStr);
-    var decryptedData = CryptoJS.AES.decrypt(encryptedBase64Str, key, {
+    let key = CryptoJS.enc.Utf8.parse(secretKey);
+    let encryptedHexStr = CryptoJS.enc.Hex.parse(data);
+    let encryptedBase64Str = CryptoJS.enc.Base64.stringify(encryptedHexStr);
+    let decryptedData = CryptoJS.AES.decrypt(encryptedBase64Str, key, {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7,
     });
@@ -252,20 +252,20 @@ function decryptAES128(data, secretKey) {
 
 // Token verification calculation
 function calcSign(clientId, accessToken, timestamp, signStr, secret) {
-    var str = clientId + (accessToken || '') + timestamp + signStr;
-    var hash = CryptoJS.HmacSHA256(str, secret);
-    var hashInBase64 = hash.toString();
+    let str = clientId + (accessToken || '') + timestamp + signStr;
+    let hash = CryptoJS.HmacSHA256(str, secret);
+    let hashInBase64 = hash.toString();
 
     return hashInBase64.toUpperCase();
 }
 
 // Generate signature string
 function stringToSign(path, query, method, bodyStr){
-    var sha256 = "";
-    var url = "";
-    var headersStr = "";
-    var map = {};
-    var arr = [];
+    let sha256 = "";
+    let url = "";
+    let headersStr = "";
+    let map = {};
+    let arr = [];
     if (query){
         toJsonObj(query, arr, map);
     }
@@ -289,8 +289,8 @@ function stringToSign(path, query, method, bodyStr){
 }
 
 function toJsonObj(params, arr, map){
-    var jsonBodyStr = JSON.stringify(params);
-    var jsonBody = JSON.parse(jsonBodyStr);
+    let jsonBodyStr = JSON.stringify(params);
+    let jsonBody = JSON.parse(jsonBodyStr);
 
     jsonBody.forEach(function(item){
         arr.push(item.key);
